@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
 
+
+
     const Links = <>
         <li><NavLink to = "/">Home</NavLink></li>
         <li><NavLink to = "/login">Login</NavLink></li>
@@ -19,7 +21,7 @@ const NavBar = () => {
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
-                            fill="none"
+                            fill="none" 
                             viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path
