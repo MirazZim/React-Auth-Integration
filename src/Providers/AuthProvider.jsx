@@ -1,11 +1,13 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { createContext } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { createContext, useState } from "react";
 import { auth } from "../firebase.init";
 
 /* Create Context API */
 export const AuthContext = createContext(null)
 
 const AuthProvider = ({children}) => {
+
+    const [user , setUser] = useState(null)
 
     /* Ekhane Firebase theke ene Email and Password er function likhsi jeta jekono jaga theke call kora jabe if i want */
 
@@ -18,8 +20,20 @@ const AuthProvider = ({children}) => {
         return signInWithEmailAndPassword (auth, email, password)
     } 
 
+    //This is a observer to make you notice who is currently Logged in
+    onAuthStateChanged(auth, currentUser => {
+        if(currentUser){
+            console.log('Current user is Logged in',currentUser)
+            setUser(currentUser);
+        }
+        else{
+            console.log('No User Logged In')
+            setUser(null)
+        }
+    })
+
     const authInfo = {
-        
+        user,
         createUser,
         signInUser
     }
