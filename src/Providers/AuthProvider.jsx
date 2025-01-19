@@ -1,5 +1,5 @@
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { createContext, useState } from "react";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase.init";
 
 /* Create Context API */
@@ -20,22 +20,31 @@ const AuthProvider = ({children}) => {
         return signInWithEmailAndPassword (auth, email, password)
     } 
 
-    //This is a observer to make you notice who is currently Logged in
-    onAuthStateChanged(auth, currentUser => {
-        if(currentUser){
-            console.log('Current user is Logged in',currentUser)
+    const signOutUser = () =>{
+        return signOut(auth);
+    }
+
+
+    useEffect(() => {
+        const unSubscribe = onAuthStateChanged(auth, currentUser =>{
+            console.log('Current User', currentUser)
             setUser(currentUser);
+        })
+
+        //Component UnMount // this is a clean up function
+        return ()=>{
+            unSubscribe();
         }
-        else{
-            console.log('No User Logged In')
-            setUser(null)
-        }
-    })
+
+    },[])
+
+    
 
     const authInfo = {
         user,
         createUser,
-        signInUser
+        signInUser,
+        signOutUser
     }
 
     return (
