@@ -13,6 +13,13 @@ const NavBar = () => {
         <li><NavLink to = "/">Home</NavLink></li>
         <li><NavLink to = "/login">Login</NavLink></li>
         <li><NavLink to ="register">Register</NavLink></li>
+
+        {/* When user is logged in only then the orders page will be visible or else it wont be visible  */}
+        {
+            user && <>
+                <li><NavLink to ="/Orders">Orders</NavLink></li>
+             </>
+        }
         
     </>
 
